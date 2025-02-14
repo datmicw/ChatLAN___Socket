@@ -8,9 +8,9 @@ namespace ChatLAN___Socket
 {
     public partial class Chat : Form
     {
-        private TcpClient client;
-        private NetworkStream stream;
-        private Thread receiveThread;
+        private TcpClient client; // client
+        private NetworkStream stream; // stream để gửi và nhận dữ liệu
+        private Thread receiveThread; // thread để nhận dữ liệu
 
         public Chat()
         {
@@ -21,12 +21,12 @@ namespace ChatLAN___Socket
         {
             try
             {
-                client = new TcpClient("192.168.1.5", 5000);
-                stream = client.GetStream();
+                client = new TcpClient("192.168.1.5", 5000); // kết nối đến server
+                stream = client.GetStream(); // lấy stream từ client
 
-                receiveThread = new Thread(ReceiveMessages);
-                receiveThread.IsBackground = true;
-                receiveThread.Start();
+                receiveThread = new Thread(ReceiveMessages); // tạo thread để nhận dữ liệu
+                receiveThread.IsBackground = true; // đặt thread chạy ngầm
+                receiveThread.Start(); // bắt đầu thread
             }
             catch (Exception ex)
             {
@@ -45,8 +45,8 @@ namespace ChatLAN___Socket
                 }
 
                 string message = txt_enterMessage.Text;
-                byte[] bytes = Encoding.UTF8.GetBytes(message);
-                stream.Write(bytes, 0, bytes.Length);
+                byte[] bytes = Encoding.UTF8.GetBytes(message);     // chuyển tin nhắn sang dạng byte
+                stream.Write(bytes, 0, bytes.Length);               // gửi tin nhắn
 
                 ltb_showMessage.Items.Add("Tôi: " + message);
                 txt_enterMessage.Clear();
@@ -64,10 +64,10 @@ namespace ChatLAN___Socket
             {
                 try
                 {
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length); // đọc dữ liệu từ server
                     if (bytesRead == 0) break; // server đóng kết nối, thoát vòng lặp
 
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead); // chuyển byte sang chuỗi
                     Invoke(new Action(() =>
                     {
                         ltb_showMessage.Items.Add("Người khác: " + message);
@@ -88,6 +88,7 @@ namespace ChatLAN___Socket
         {
             try
             {
+                // đóng tất cả kết nối
                 stream?.Close();
                 client?.Close();
                 receiveThread?.Abort();
