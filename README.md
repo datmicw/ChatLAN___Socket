@@ -23,4 +23,4 @@
 1. Mở **`ChatClient`** (WinForms).
 2. Chỉnh sửa file `Chat.cs` → Đặt đúng **địa chỉ IP của Server**:
 ```csharp
-client = new TcpClient("192.168.1.100", 5000);
+client = new TcpClient("192.168.1.5", 5000); // kết nối đến server
