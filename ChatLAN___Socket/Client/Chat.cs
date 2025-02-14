@@ -21,7 +21,7 @@ namespace ChatLAN___Socket
         {
             try
             {
-                client = new TcpClient("127.0.0.1", 5000); // kết nối đến server
+                client = new TcpClient("127.0.0.1", 5000); // kết nối đến server 127.0.0.1(localhost)
                 stream = client.GetStream(); // lấy stream từ client
 
                 receiveThread = new Thread(ReceiveMessages); // tạo thread để nhận dữ liệu
